@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Mahasiswa - SuratMahasiswa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-page">
+
+    <header class="dashboard-header">
+        <a href="dashboard.html" class="dashboard-brand">
+            Surat<span>Mahasiswa</span>
+        </a>
+
+        <button id="logoutButton" class="logout-button">
+            Keluar
+        </button>
+    </header>
+
+    <main class="dashboard-container">
+        <section class="welcome-section">
+            <p class="dashboard-label">DASHBOARD MAHASISWA</p>
+            <h1>Selamat datang, <span id="namaMahasiswa">Mahasiswa</span>!</h1>
+            <p>
+                Selamat datang di layanan pengajuan surat mahasiswa.
+                Silakan gunakan menu di bawah untuk mengelola pengajuan surat.
+            </p>
+        </section>
+
+        <section class="profile-card">
+            <h2>Informasi Akun</h2>
+
+            <div class="profile-information">
+                <div>
+                    <span>Nama Lengkap</span>
+                    <strong id="profileNama">Memuat...</strong>
+                </div>
+
+                <div>
+                    <span>NIM</span>
+                    <strong id="profileNim">Memuat...</strong>
+                </div>
+
+                <div>
+                    <span>Email</span>
+                    <strong id="profileEmail">Memuat...</strong>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-menu">
+            <h2>Menu Layanan</h2>
+
+            <div class="dashboard-grid">
+                <a href="pengajuan.html" class="dashboard-menu-card">
+                    <div class="menu-icon">📄</div>
+                    <h3>Ajukan Surat</h3>
+                    <p>Buat pengajuan surat secara online.</p>
+                    <span>Mulai pengajuan →</span>
+                </a>
+
+                <a href="riwayat.html" class="dashboard-menu-card">
+                    <div class="menu-icon">📋</div>
+                    <h3>Riwayat Pengajuan</h3>
+                    <p>Lihat status dan riwayat pengajuan surat.</p>
+                    <span>Lihat riwayat →</span>
+                </a>
+
+                <a href="profil.html" class="dashboard-menu-card">
+                    <div class="menu-icon">👤</div>
+                    <h3>Profil Saya</h3>
+                    <p>Lihat informasi akun mahasiswa.</p>
+                    <span>Lihat profil →</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="dashboard.js"></script>
+</body>
+</html>

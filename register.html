@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrasi - SuratMahasiswa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+
+    <div class="auth-container">
+        <a href="index.html" class="back-link">← Kembali ke Beranda</a>
+
+        <div class="auth-card">
+            <div class="auth-logo">Surat<span>Mahasiswa</span></div>
+
+            <h2>Buat Akun Mahasiswa</h2>
+            <p class="auth-description">
+                Lengkapi data berikut untuk membuat akun.
+            </p>
+
+            <form id="registerForm">
+                <label for="nama">Nama Lengkap</label>
+                <input
+                    type="text"
+                    id="nama"
+                    placeholder="Masukkan nama lengkap"
+                    required
+                >
+
+                <label for="nim">NIM</label>
+                <input
+                    type="text"
+                    id="nim"
+                    placeholder="Masukkan NIM"
+                    required
+                >
+
+                <label for="emailRegister">Email</label>
+                <input
+                    type="email"
+                    id="emailRegister"
+                    placeholder="Masukkan email aktif"
+                    required
+                >
+
+                <label for="passwordRegister">Password</label>
+                <input
+                    type="password"
+                    id="passwordRegister"
+                    placeholder="Buat password"
+                    minlength="8"
+                    required
+                >
+
+                <button type="submit" class="auth-button">
+                    Daftar Sekarang
+                </button>
+            </form>
+
+            <p class="auth-switch">
+                Sudah memiliki akun?
+                <a href="login.html">Masuk di sini</a>
+            </p>
+        </div>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+</body>
+</html>

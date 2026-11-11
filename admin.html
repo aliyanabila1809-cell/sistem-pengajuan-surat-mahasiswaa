@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin | Surat Mahasiswa</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="dashboard-page">
+
+    <!-- HEADER -->
+    <header class="dashboard-header">
+
+        <div class="dashboard-brand">
+            Surat<span>Mahasiswa</span>
+        </div>
+
+        <div class="admin-header-right">
+            <span>Administrator</span>
+            <button id="logoutButton" class="logout-button">
+                Keluar
+            </button>
+        </div>
+
+    </header>
+
+    <main class="dashboard-container">
+
+        <!-- SAMBUTAN ADMIN -->
+        <section class="welcome-section">
+
+            <p class="dashboard-label">ADMINISTRATOR</p>
+
+            <h1>Dashboard Admin</h1>
+
+            <p>
+                Selamat datang! Kelola dan pantau seluruh pengajuan
+                surat mahasiswa dengan mudah melalui halaman ini.
+            </p>
+
+        </section>
+
+        <!-- STATISTIK -->
+        <section class="admin-stat-grid">
+
+            <div class="admin-stat-card stat-blue">
+                <span>Total Pengajuan</span>
+                <strong id="totalPengajuan">0</strong>
+            </div>
+
+            <div class="admin-stat-card stat-orange">
+                <span>Menunggu</span>
+                <strong id="jumlahMenunggu">0</strong>
+            </div>
+
+            <div class="admin-stat-card stat-teal">
+                <span>Sedang Diproses</span>
+                <strong id="jumlahDiproses">0</strong>
+            </div>
+
+            <div class="admin-stat-card stat-purple">
+                <span>Disetujui</span>
+                <strong id="jumlahDisetujui">0</strong>
+            </div>
+
+            <div class="admin-stat-card stat-red">
+                <span>Ditolak</span>
+                <strong id="jumlahDitolak">0</strong>
+            </div>
+
+        </section>
+
+        <!-- DATA PENGAJUAN -->
+        <section class="content-card">
+
+            <div class="content-header">
+                <h2>Data Pengajuan Surat</h2>
+
+                <p>
+                    Periksa dan kelola seluruh pengajuan surat mahasiswa.
+                </p>
+            </div>
+
+            <!-- PENCARIAN DAN FILTER -->
+            <div class="admin-tools">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Cari nama mahasiswa atau NIM..."
+                >
+
+                <select id="filterStatus">
+                    <option value="">Semua Status</option>
+                    <option value="Menunggu">Menunggu</option>
+                    <option value="Sedang Diproses">Sedang Diproses</option>
+                    <option value="Disetujui">Disetujui</option>
+                    <option value="Ditolak">Ditolak</option>
+                </select>
+
+            </div>
+
+            <!-- TABEL -->
+            <div class="table-responsive">
+
+                <table class="data-table">
+
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Nama Mahasiswa</th>
+                            <th>NIM</th>
+                            <th>Jenis Surat</th>
+                            <th>Tanggal</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tabelPengajuan">
+                        <tr>
+                            <td colspan="7">
+                                Memuat data pengajuan...
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- MODAL DETAIL PENGAJUAN -->
+    <div id="detailModal" class="admin-modal">
+
+        <div class="admin-modal-content">
+
+            <button
+                type="button"
+                id="closeModal"
+                class="close-modal"
+            >
+                &times;
+            </button>
+
+            <h2>Detail Pengajuan</h2>
+
+            <div id="detailPengajuan"></div>
+
+            <form id="updateStatusForm">
+
+                <label for="statusBaru">Ubah Status</label>
+
+                <select id="statusBaru" required>
+                    <option value="Menunggu">Menunggu</option>
+                    <option value="Sedang Diproses">Sedang Diproses</option>
+                    <option value="Disetujui">Disetujui</option>
+                    <option value="Ditolak">Ditolak</option>
+                </select>
+
+                <label for="keteranganBaru">
+                    Keterangan Admin
+                </label>
+
+                <textarea
+                    id="keteranganBaru"
+                    rows="4"
+                    placeholder="Masukkan keterangan untuk mahasiswa..."
+                ></textarea>
+
+                <button type="submit" class="btn-login">
+                    Simpan Perubahan
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <script type="module" src="admin.js"></script>
+
+</body>
+</html>
+

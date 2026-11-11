@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengajuan Surat - SuratMahasiswa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-page">
+
+    <header class="dashboard-header">
+        <a href="dashboard.html" class="dashboard-brand">
+            Surat<span>Mahasiswa</span>
+        </a>
+        <button class="logout-button" onclick="window.location.href='dashboard.html'">
+            Kembali
+        </button>
+    </header>
+
+    <main class="dashboard-container">
+        <section class="profile-card">
+            <h2>Formulir Pengajuan Surat</h2>
+            <p>Silakan isi data berikut dengan benar untuk mengajukan surat.</p>
+
+            <form id="pengajuanForm" class="pengajuan-form">
+
+                <label for="jenisSurat">Jenis Surat</label>
+                <select id="jenisSurat" required>
+                    <option value="">-- Pilih Jenis Surat --</option>
+                    <option value="Surat Keterangan Aktif Kuliah">Surat Keterangan Aktif Kuliah</option>
+                    <option value="Surat Keterangan Berkelakuan Baik">Surat Keterangan Berkelakuan Baik</option>
+                    <option value="Surat Pengantar Penelitian">Surat Pengantar Penelitian</option>
+                    <option value="Surat Izin Penelitian">Surat Izin Penelitian</option>
+                    <option value="Surat Keterangan Mahasiswa">Surat Keterangan Mahasiswa</option>
+                </select>
+
+                <label for="keperluan">Keperluan Pengajuan</label>
+                <textarea
+                    id="keperluan"
+                    rows="5"
+                    placeholder="Jelaskan keperluan pengajuan surat..."
+                    required
+                ></textarea>
+
+                <label for="tanggalPengajuan">Tanggal Pengajuan</label>
+                <input type="date" id="tanggalPengajuan" required>
+
+                <button type="submit" class="auth-button" id="submitPengajuan">
+                    Kirim Pengajuan
+                </button>
+
+            </form>
+
+            <p id="pesanPengajuan" class="pesan-pengajuan"></p>
+        </section>
+    </main>
+
+    <script type="module" src="pengajuan.js"></script>
+</body>
+</html>

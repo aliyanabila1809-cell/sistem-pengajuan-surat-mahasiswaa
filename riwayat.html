@@ -1,0 +1,101 @@
+
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Pengajuan - SuratMahasiswa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-page">
+
+    <!-- Header -->
+    <header class="dashboard-header">
+        <a href="dashboard.html" class="dashboard-brand">
+            Surat<span>Mahasiswa</span>
+        </a>
+
+        <button type="button" class="logout-button"
+            onclick="window.location.href='dashboard.html'">
+            Kembali
+        </button>
+    </header>
+
+    <!-- Konten utama -->
+    <main class="dashboard-container">
+
+        <section class="profile-card">
+
+            <h2>Riwayat Pengajuan Surat</h2>
+            <p>
+                Lihat daftar pengajuan surat, status proses,
+                dan informasi terbaru dari admin.
+            </p>
+
+            <!-- Notifikasi -->
+            <div class="notification-box">
+
+                <button type="button"
+                    id="notificationButton"
+                    class="notification-button">
+
+                    🔔 Notifikasi
+                    <span id="notificationCount">0</span>
+
+                </button>
+
+                <div id="notificationList" class="notification-list">
+
+                    <h3>Notifikasi Terbaru</h3>
+
+                    <div id="notificationItems">
+                        Memuat notifikasi...
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Pesan informasi -->
+            <div id="pesanRiwayat" class="pesan-pengajuan">
+                Memuat data pengajuan...
+            </div>
+
+            <!-- Tabel riwayat -->
+            <div class="riwayat-table-wrapper">
+
+                <table class="riwayat-table">
+
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Jenis Surat</th>
+                            <th>Keperluan</th>
+                            <th>Tanggal</th>
+                            <th>Status</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="daftarRiwayat">
+                        <tr>
+                            <td colspan="6">
+                                Memuat data...
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script type="module" src="riwayat.js"></script>
+
+</body>
+</html>

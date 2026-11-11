@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SuratMahasiswa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+
+    <div class="auth-container">
+        <a href="index.html" class="back-link">← Kembali ke Beranda</a>
+
+        <div class="auth-card">
+            <div class="auth-logo">Surat<span>Mahasiswa</span></div>
+
+            <h2>Selamat Datang!</h2>
+            <p class="auth-description">
+                Silakan masuk menggunakan akun mahasiswa kamu.
+            </p>
+
+            <form id="loginForm">
+                <label for="email">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Masukkan email"
+                    required
+                >
+
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Masukkan password"
+                    required
+                >
+
+                <button type="submit" class="auth-button">Masuk</button>
+            </form>
+
+            <p class="auth-switch">
+                Belum memiliki akun?
+                <a href="register.html">Daftar sekarang</a>
+            </p>
+        </div>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+</body>
+</html>
