@@ -1,5 +1,10 @@
 
+
 import { supabase } from "./supabase.js";
+
+// =====================================
+// MENGAMBIL ELEMEN HTML
+// =====================================
 
 const tabelPengajuan = document.getElementById("tabelPengajuan");
 const totalPengajuan = document.getElementById("totalPengajuan");
@@ -15,10 +20,15 @@ const detailModal = document.getElementById("detailModal");
 const detailPengajuan = document.getElementById("detailPengajuan");
 const updateStatusForm = document.getElementById("updateStatusForm");
 
+const downloadPDF = document.getElementById("downloadPDF");
+
 let semuaPengajuan = [];
 let pengajuanTerpilih = null;
 
-// Memeriksa akun admin
+// =====================================
+// MEMERIKSA AKUN ADMIN
+// =====================================
+
 async function periksaAdmin() {
     const { data: { user }, error } = await supabase.auth.getUser();
 
@@ -43,10 +53,64 @@ async function periksaAdmin() {
     return true;
 }
 
-// Mengambil data pengajuan
+// =====================================
+// PENGAMANAN TEKS DARI DATABASE
+// =====================================
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+// =====================================
+// FORMAT TANGGAL INDONESIA
+// =====================================
+
+function formatTanggal(tanggal) {
+    if (!tanggal) return "-";
+
+    const hasil = new Date(tanggal);
+
+    if (Number.isNaN(hasil.getTime())) {
+        return escapeHTML(tanggal);
+    }
+
+    return hasil.toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
+}
+
+// =====================================
+// KELAS STATUS
+// =====================================
+
+function kelasStatus(status) {
+    const daftarStatus = {
+        "Menunggu": "menunggu",
+        "Sedang Diproses": "diproses",
+        "Disetujui": "disetujui",
+        "Ditolak": "ditolak"
+    };
+
+    return daftarStatus[status] || "lainnya";
+}
+
+// =====================================
+// MENGAMBIL DATA PENGAJUAN
+// =====================================
+
 async function ambilPengajuan() {
     tabelPengajuan.innerHTML = `
-        <tr><td colspan="7">Memuat data pengajuan...</td></tr>
+        <tr>
+            <td colspan="7">Memuat data pengajuan...</td>
+        </tr>
     `;
 
     const { data, error } = await supabase
@@ -71,7 +135,8 @@ async function ambilPengajuan() {
         tabelPengajuan.innerHTML = `
             <tr>
                 <td colspan="7">
-                    Gagal mengambil data: ${escapeHTML(error.message)}
+                    Gagal mengambil data:
+                    ${escapeHTML(error.message)}
                 </td>
             </tr>
         `;
@@ -84,7 +149,10 @@ async function ambilPengajuan() {
     tampilkanTabel();
 }
 
-// Statistik pengajuan
+// =====================================
+// STATISTIK PENGAJUAN
+// =====================================
+
 function tampilkanStatistik() {
     totalPengajuan.textContent = semuaPengajuan.length;
 
@@ -105,54 +173,22 @@ function tampilkanStatistik() {
     ).length;
 }
 
-// Pengamanan teks dari database
-function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, char => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-    })[char]);
-}
+// =====================================
+// MENAMPILKAN TABEL PENGAJUAN
+// =====================================
 
-// Mengubah status menjadi kelas CSS
-function kelasStatus(status) {
-    const daftarStatus = {
-        "Menunggu": "menunggu",
-        "Sedang Diproses": "diproses",
-        "Disetujui": "disetujui",
-        "Ditolak": "ditolak"
-    };
-
-    return daftarStatus[status] || "lainnya";
-}
-
-// Format tanggal Indonesia
-function formatTanggal(tanggal) {
-    if (!tanggal) return "-";
-
-    const hasil = new Date(tanggal);
-
-    if (Number.isNaN(hasil.getTime())) {
-        return escapeHTML(tanggal);
-    }
-
-    return hasil.toLocaleDateString("id-ID", {
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-    });
-}
-
-// Menampilkan tabel
 function tampilkanTabel() {
     const kataKunci = searchInput.value.trim().toLowerCase();
     const statusDipilih = filterStatus.value;
 
     const hasilFilter = semuaPengajuan.filter(item => {
-        const nama = String(item.profiles?.nama || "").toLowerCase();
-        const nim = String(item.profiles?.nim || "").toLowerCase();
+        const nama = String(
+            item.profiles?.nama || ""
+        ).toLowerCase();
+
+        const nim = String(
+            item.profiles?.nim || ""
+        ).toLowerCase();
 
         const cocokPencarian =
             nama.includes(kataKunci) ||
@@ -179,13 +215,21 @@ function tampilkanTabel() {
         <tr>
             <td>${index + 1}</td>
 
-            <td>${escapeHTML(item.profiles?.nama || "-")}</td>
+            <td>
+                ${escapeHTML(item.profiles?.nama || "-")}
+            </td>
 
-            <td>${escapeHTML(item.profiles?.nim || "-")}</td>
+            <td>
+                ${escapeHTML(item.profiles?.nim || "-")}
+            </td>
 
-            <td>${escapeHTML(item.jenis_surat || "-")}</td>
+            <td>
+                ${escapeHTML(item.jenis_surat || "-")}
+            </td>
 
-            <td>${formatTanggal(item.tanggal_pengajuan)}</td>
+            <td>
+                ${formatTanggal(item.tanggal_pengajuan)}
+            </td>
 
             <td>
                 <span class="status-badge status-${kelasStatus(item.status)}">
@@ -206,8 +250,126 @@ function tampilkanTabel() {
     `).join("");
 }
 
-// Membuka detail pengajuan
-function bukaDetail(id) {
+// =====================================
+// MENAMPILKAN DOKUMEN MAHASISWA
+// =====================================
+
+async function tampilkanDokumen(pengajuanId) {
+    let bagianDokumen = document.getElementById("bagianDokumen");
+
+    if (!bagianDokumen) {
+        bagianDokumen = document.createElement("div");
+        bagianDokumen.id = "bagianDokumen";
+        bagianDokumen.className = "detail-dokumen";
+        detailPengajuan.appendChild(bagianDokumen);
+    }
+
+    bagianDokumen.innerHTML = `
+        <h3>Dokumen Persyaratan</h3>
+        <p class="dokumen-loading">Memuat dokumen...</p>
+    `;
+
+    try {
+        const { data: dokumen, error } = await supabase
+            .from("dokumen")
+            .select("id, nama_file, lokasi_file, tanggal_upload")
+            .eq("pengajuan_id", pengajuanId)
+            .order("tanggal_upload", { ascending: false });
+
+        if (error) throw error;
+
+        if (!dokumen || dokumen.length === 0) {
+            bagianDokumen.innerHTML = `
+                <h3>Dokumen Persyaratan</h3>
+                <p class="dokumen-kosong">
+                    Mahasiswa belum melampirkan dokumen.
+                </p>
+            `;
+            return;
+        }
+
+        bagianDokumen.innerHTML = `
+            <h3>Dokumen Persyaratan</h3>
+            <div id="daftarDokumenAdmin"></div>
+        `;
+
+        const daftarDokumen =
+            bagianDokumen.querySelector("#daftarDokumenAdmin");
+
+        for (const item of dokumen) {
+            const baris = document.createElement("div");
+            baris.className = "dokumen-admin-item";
+
+            const nama = document.createElement("span");
+            nama.className = "dokumen-admin-nama";
+            nama.textContent = item.nama_file || "Dokumen mahasiswa";
+
+            const tombol = document.createElement("button");
+            tombol.type = "button";
+            tombol.className = "dokumen-download-button";
+            tombol.textContent = "Download";
+
+            tombol.addEventListener("click", async () => {
+                try {
+                    tombol.disabled = true;
+                    tombol.textContent = "Menyiapkan...";
+
+                    const { data, error: downloadError } =
+                        await supabase.storage
+                            .from("dokumen-pengajuan")
+                            .createSignedUrl(
+                                item.lokasi_file,
+                                60,
+                                { download: item.nama_file }
+                            );
+
+                    if (downloadError) throw downloadError;
+
+                    const link = document.createElement("a");
+                    link.href = data.signedUrl;
+                    link.download = item.nama_file;
+
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+
+                } catch (error) {
+                    console.error("Gagal mengunduh dokumen:", error);
+
+                    alert(
+                        "Dokumen gagal diunduh: " + error.message
+                    );
+
+                } finally {
+                    tombol.disabled = false;
+                    tombol.textContent = "Download";
+                }
+            });
+
+            baris.appendChild(nama);
+            baris.appendChild(tombol);
+
+            daftarDokumen.appendChild(baris);
+        }
+
+    } catch (error) {
+        console.error("Gagal mengambil dokumen:", error);
+
+        bagianDokumen.innerHTML = `
+            <h3>Dokumen Persyaratan</h3>
+            <p class="dokumen-error">
+                Gagal memuat dokumen:
+                ${escapeHTML(error.message)}
+            </p>
+        `;
+    }
+}
+
+// =====================================
+// MEMBUKA DETAIL PENGAJUAN
+// =====================================
+
+async function bukaDetail(id) {
     const item = semuaPengajuan.find(
         data => String(data.id) === String(id)
     );
@@ -217,29 +379,61 @@ function bukaDetail(id) {
     pengajuanTerpilih = item;
 
     detailPengajuan.innerHTML = `
-        <p><strong>Nama:</strong> ${escapeHTML(item.profiles?.nama || "-")}</p>
-        <p><strong>NIM:</strong> ${escapeHTML(item.profiles?.nim || "-")}</p>
-        <p><strong>Email:</strong> ${escapeHTML(item.profiles?.email || "-")}</p>
-        <p><strong>Jenis Surat:</strong> ${escapeHTML(item.jenis_surat || "-")}</p>
-        <p><strong>Tanggal:</strong> ${formatTanggal(item.tanggal_pengajuan)}</p>
-        <p><strong>Keperluan:</strong> ${escapeHTML(item.keperluan || "-")}</p>
+        <p>
+            <strong>Nama:</strong>
+            ${escapeHTML(item.profiles?.nama || "-")}
+        </p>
+
+        <p>
+            <strong>NIM:</strong>
+            ${escapeHTML(item.profiles?.nim || "-")}
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            ${escapeHTML(item.profiles?.email || "-")}
+        </p>
+
+        <p>
+            <strong>Jenis Surat:</strong>
+            ${escapeHTML(item.jenis_surat || "-")}
+        </p>
+
+        <p>
+            <strong>Tanggal:</strong>
+            ${formatTanggal(item.tanggal_pengajuan)}
+        </p>
+
+        <p>
+            <strong>Keperluan:</strong>
+            ${escapeHTML(item.keperluan || "-")}
+        </p>
     `;
 
     document.getElementById("statusBaru").value = item.status;
+
     document.getElementById("keteranganBaru").value =
         item.keterangan || "";
 
     detailModal.classList.add("active");
+
+    // Memuat dokumen mahasiswa
+    await tampilkanDokumen(id);
 }
 
-// Menyimpan perubahan status
+// =====================================
+// MENYIMPAN PERUBAHAN STATUS
+// =====================================
+
 updateStatusForm.addEventListener("submit", async function(event) {
     event.preventDefault();
 
     if (!pengajuanTerpilih) return;
 
     const status = document.getElementById("statusBaru").value;
-    const keterangan = document.getElementById("keteranganBaru").value;
+
+    const keterangan =
+        document.getElementById("keteranganBaru").value;
 
     const tombol = updateStatusForm.querySelector(
         "button[type='submit']"
@@ -248,31 +442,39 @@ updateStatusForm.addEventListener("submit", async function(event) {
     tombol.disabled = true;
     tombol.textContent = "Menyimpan...";
 
-    const { error } = await supabase
-        .from("pengajuan")
-        .update({
-            status: status,
-            keterangan: keterangan
-        })
-        .eq("id", pengajuanTerpilih.id);
+    try {
+        const { error } = await supabase
+            .from("pengajuan")
+            .update({
+                status: status,
+                keterangan: keterangan
+            })
+            .eq("id", pengajuanTerpilih.id);
 
-    tombol.disabled = false;
-    tombol.textContent = "Simpan Perubahan";
+        if (error) throw error;
 
-    if (error) {
-        alert("Gagal memperbarui pengajuan: " + error.message);
-        return;
+        alert("Status pengajuan berhasil diperbarui!");
+
+        detailModal.classList.remove("active");
+        pengajuanTerpilih = null;
+
+        await ambilPengajuan();
+
+    } catch (error) {
+        alert(
+            "Gagal memperbarui pengajuan: " + error.message
+        );
+
+    } finally {
+        tombol.disabled = false;
+        tombol.textContent = "Simpan Perubahan";
     }
-
-    alert("Status pengajuan berhasil diperbarui!");
-
-    detailModal.classList.remove("active");
-    pengajuanTerpilih = null;
-
-    await ambilPengajuan();
 });
 
-// Tombol detail
+// =====================================
+// TOMBOL DETAIL
+// =====================================
+
 tabelPengajuan.addEventListener("click", function(event) {
     const tombol = event.target.closest("[data-detail-id]");
 
@@ -281,11 +483,18 @@ tabelPengajuan.addEventListener("click", function(event) {
     }
 });
 
-// Pencarian dan filter
+// =====================================
+// PENCARIAN DAN FILTER
+// =====================================
+
 searchInput.addEventListener("input", tampilkanTabel);
+
 filterStatus.addEventListener("change", tampilkanTabel);
 
-// Tutup modal
+// =====================================
+// MENUTUP MODAL
+// =====================================
+
 document.getElementById("closeModal").addEventListener("click", () => {
     detailModal.classList.remove("active");
 });
@@ -296,7 +505,142 @@ detailModal.addEventListener("click", event => {
     }
 });
 
-// Logout
+// =====================================
+// DOWNLOAD LAPORAN PENGAJUAN PDF
+// =====================================
+
+downloadPDF?.addEventListener("click", async () => {
+    try {
+        downloadPDF.disabled = true;
+        downloadPDF.textContent = "Menyiapkan PDF...";
+
+        const { data, error } = await supabase
+            .from("pengajuan")
+            .select(`
+                id,
+                jenis_surat,
+                tanggal_pengajuan,
+                status,
+                profiles (
+                    nama,
+                    nim
+                )
+            `)
+            .order("tanggal_pengajuan", { ascending: false });
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            alert(
+                "Belum ada data pengajuan untuk dibuat menjadi laporan."
+            );
+            return;
+        }
+
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+            throw new Error(
+                "Library PDF belum berhasil dimuat. Periksa koneksi internet."
+            );
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF("landscape");
+
+        doc.setFontSize(16);
+        doc.setFont("helvetica", "bold");
+
+        doc.text(
+            "LAPORAN PENGAJUAN SURAT MAHASISWA",
+            148,
+            18,
+            { align: "center" }
+        );
+
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+
+        doc.text(
+            "Sistem Pengajuan Surat Mahasiswa",
+            148,
+            25,
+            { align: "center" }
+        );
+
+        doc.text(
+            "Tanggal Cetak: " +
+            new Date().toLocaleDateString("id-ID"),
+            14,
+            35
+        );
+
+        const rows = data.map((item, index) => [
+            index + 1,
+            item.profiles?.nama || "-",
+            item.profiles?.nim || "-",
+            item.jenis_surat || "-",
+            item.tanggal_pengajuan
+                ? new Date(item.tanggal_pengajuan)
+                    .toLocaleDateString("id-ID")
+                : "-",
+            item.status || "-"
+        ]);
+
+        doc.autoTable({
+            startY: 42,
+
+            head: [[
+                "No.",
+                "Nama Mahasiswa",
+                "NIM",
+                "Jenis Surat",
+                "Tanggal Pengajuan",
+                "Status"
+            ]],
+
+            body: rows,
+
+            theme: "grid",
+
+            styles: {
+                fontSize: 9,
+                cellPadding: 3
+            },
+
+            headStyles: {
+                fillColor: [36, 59, 117],
+                textColor: 255,
+                halign: "center"
+            },
+
+            columnStyles: {
+                0: { halign: "center" },
+                2: { halign: "center" },
+                4: { halign: "center" },
+                5: { halign: "center" }
+            }
+        });
+
+        doc.save(
+            "Laporan-Pengajuan-Surat-Mahasiswa.pdf"
+        );
+
+    } catch (error) {
+        console.error("Gagal membuat PDF:", error);
+
+        alert(
+            "Gagal membuat laporan PDF: " + error.message
+        );
+
+    } finally {
+        downloadPDF.disabled = false;
+        downloadPDF.textContent = "Download Laporan PDF";
+    }
+});
+
+// =====================================
+// LOGOUT ADMIN
+// =====================================
+
 document.getElementById("logoutButton").addEventListener("click", async () => {
     const { error } = await supabase.auth.signOut();
 
@@ -308,10 +652,12 @@ document.getElementById("logoutButton").addEventListener("click", async () => {
     window.location.href = "login.html";
 });
 
-// Menjalankan halaman admin
+// =====================================
+// MENJALANKAN HALAMAN ADMIN
+// =====================================
+
 const bolehMasuk = await periksaAdmin();
 
 if (bolehMasuk) {
     await ambilPengajuan();
 }
-

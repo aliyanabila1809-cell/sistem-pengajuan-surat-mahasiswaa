@@ -13,14 +13,17 @@
         <a href="dashboard.html" class="dashboard-brand">
             Surat<span>Mahasiswa</span>
         </a>
-        <button class="logout-button" onclick="window.location.href='dashboard.html'">
+
+        <button type="button" class="logout-button"
+            onclick="window.location.href='dashboard.html'">
             Kembali
         </button>
     </header>
 
     <main class="dashboard-container">
         <section class="profile-card">
-            <h2>Formulir Pengajuan Surat</h2>
+
+            <h2 id="judulForm">Formulir Pengajuan Surat</h2>
             <p>Silakan isi data berikut dengan benar untuk mengajukan surat.</p>
 
             <form id="pengajuanForm" class="pengajuan-form">
@@ -46,16 +49,45 @@
                 <label for="tanggalPengajuan">Tanggal Pengajuan</label>
                 <input type="date" id="tanggalPengajuan" required>
 
-                <button type="submit" class="auth-button" id="submitPengajuan">
-                    Kirim Pengajuan
-                </button>
+                <label for="dokumenPendukung">Dokumen Persyaratan</label>
+                <input
+                    type="file"
+                    id="dokumenPendukung"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                >
+
+                <small class="file-hint">
+                    Lampirkan dokumen pendukung jika diperlukan.
+                    Format PDF, JPG, atau PNG dengan ukuran maksimal 5 MB.
+                </small>
+
+                <div class="draft-button-group">
+                    <button
+                        type="button"
+                        class="auth-button"
+                        id="simpanDraft"
+                    >
+                        Simpan sebagai Draft
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="auth-button"
+                        id="submitPengajuan"
+                    >
+                        Kirim Pengajuan
+                    </button>
+                </div>
 
             </form>
 
             <p id="pesanPengajuan" class="pesan-pengajuan"></p>
+
         </section>
     </main>
 
     <script type="module" src="pengajuan.js"></script>
+
 </body>
 </html>
+

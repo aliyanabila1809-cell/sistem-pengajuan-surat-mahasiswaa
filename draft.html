@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draft Pengajuan - SuratMahasiswa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-page">
+
+    <header class="dashboard-header">
+        <a href="dashboard.html" class="dashboard-brand">
+            Surat<span>Mahasiswa</span>
+        </a>
+
+        <button type="button" class="logout-button"
+            onclick="window.location.href='dashboard.html'">
+            Kembali
+        </button>
+    </header>
+
+    <main class="dashboard-container">
+
+        <section class="welcome-section">
+            <p class="dashboard-label">LAYANAN MAHASISWA</p>
+            <h1>Draft Pengajuan</h1>
+            <p>
+                Berikut daftar formulir pengajuan surat yang sudah
+                kamu simpan dan belum dikirim.
+            </p>
+        </section>
+
+        <section class="profile-card">
+            <div class="draft-heading">
+                <div>
+                    <h2>Daftar Draft Saya</h2>
+                    <p>Draft dapat dilanjutkan atau dihapus kapan saja.</p>
+                </div>
+
+                <a href="pengajuan.html" class="auth-button draft-add-button">
+                    + Buat Draft Baru
+                </a>
+            </div>
+
+            <div id="daftarDraft" class="draft-list">
+                <p class="draft-loading">Memuat daftar draft...</p>
+            </div>
+
+            <p id="pesanDraft" class="pesan-pengajuan"></p>
+        </section>
+
+    </main>
+
+    <!-- <script type="module" src="draft.js"></script> -->
+</body>
+</html>

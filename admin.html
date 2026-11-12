@@ -88,6 +88,20 @@
 
             <!-- PENCARIAN DAN FILTER -->
             <div class="admin-tools">
+    <input type="text" id="searchInput" placeholder="Cari nama mahasiswa atau NIM...">
+
+    <select id="filterStatus">
+        <option value="">Semua Status</option>
+        <option value="Menunggu">Menunggu</option>
+        <option value="Sedang Diproses">Sedang Diproses</option>
+        <option value="Disetujui">Disetujui</option>
+        <option value="Ditolak">Ditolak</option>
+    </select>
+
+    <button type="button" id="downloadPDF" class="download-pdf-button">
+        Download Laporan PDF
+    </button>
+</div>
 
                 <input
                     type="text"
@@ -186,7 +200,10 @@
 
     </div>
 
-    <script type="module" src="admin.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
+
+<script type="module" src="admin.js"></script>
 
 </body>
 </html>

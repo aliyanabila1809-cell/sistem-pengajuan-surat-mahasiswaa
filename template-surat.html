@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Surat</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div class="template-container">
+
+    <header class="template-header">
+        <a href="dashboard.html" class="template-back">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+
+        <div>
+            <h1>Template Surat</h1>
+            <p>Referensi format surat untuk keperluan administrasi mahasiswa.</p>
+        </div>
+    </header>
+
+    <div class="template-notice">
+        <i class="fas fa-circle-info"></i>
+        <div>
+            <strong>Informasi</strong>
+            <p>Dokumen berikut merupakan contoh format untuk referensi.
+            Bukan dokumen resmi yang telah disahkan UNIMED.
+            Silakan konfirmasi format terbaru kepada bagian administrasi kampus.</p>
+        </div>
+    </div>
+
+    <div class="template-grid" id="daftarTemplate"></div>
+
+</div>
+
+<div class="template-modal" id="modalTemplate">
+    <div class="template-modal-content">
+        <button class="template-close" id="tutupModal">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <div id="isiTemplate"></div>
+
+        <button class="template-print" id="cetakTemplate">
+            <i class="fas fa-print"></i> Cetak Contoh
+        </button>
+    </div>
+</div>
+
+<script type="module" src="template-surat.js"></script>
+</body>
+</html>
